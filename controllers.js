@@ -1,4 +1,4 @@
-const {fetchTopics} = require("./models.js")
+const {fetchTopics, fetchArticle} = require("./models.js")
 
 exports.getTopics = (req,res, next) =>{
     fetchTopics()
@@ -14,7 +14,14 @@ exports.getTopics = (req,res, next) =>{
 
 exports.getArticle = (req,res, next) => {
     const {article_id} = req.params;
-    console.log("In getArticle")
+    console.log(req.params)
+    fetchArticle()
+    .then((articles) => {
+    console.log(articles)
+ return res.status(200).send({msg: "all good"})
+})
+   
+ 
 
-    return res.status(200).send({msg: "all good"})
+   
 }

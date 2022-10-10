@@ -14,6 +14,14 @@ exports.fetchTopics = () => {
     })
 }
 
-exports.fetchArticle = () => {
-    
+exports.fetchArticle = (id) => {
+    const command = `
+    SELECT *
+    FROM articles
+    `
+
+    return db.query(command)
+    .then(({rows: articles}) => {
+        return articles
+    })
 }
