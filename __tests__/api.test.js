@@ -1,9 +1,8 @@
 const request = require("supertest");
-const app = require("../api")
+const app = require("../app")
 const db=require("../db/connection")
 const seed = require("../db/seeds/seed")
-const testData = require("../db/data/test-data")
-
+const testData = require("../db/data/test-data");
 
 
 beforeEach(() => seed(testData));
@@ -22,22 +21,18 @@ describe("GET api/topics", () =>{
       .then(({body}) => {
         
         expect(body.topics).toBeInstanceOf(Array);
-          
-        expect(body.topics[0]).toEqual(
-          expect.objectContaining({
+        expect(body.topics.length).toBe(3)
+        body.topics.forEach((element) => {            
+            expect(element).toEqual(           
+            expect.objectContaining({
             slug: expect.any(String),
             description: expect.any(String)
                 })
-            )
+             ) 
+            })   
         })
     })
-    test("Array has the correct length", () => {
-    return request(app)
-      .get("/api/topics")
-      .then(({body}) => {
-        
-        expect(body.topics.length).toBe(3)
-    })})
+ 
 })
 
 describe("GET api/articles/:article_id", () => {
