@@ -10,6 +10,10 @@ exports.fetchTopics = () => {
         return topics
     })
     .catch((err) => {
-        
+
     })
+}
+
+exports.fetchArticle = () => {
+    
 }
