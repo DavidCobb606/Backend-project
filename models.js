@@ -9,7 +9,5 @@ exports.fetchTopics = () => {
     .then(({rows: topics}) => {
         return topics
     })
-    .catch((err) => {
-        
-    })
+    
 }
