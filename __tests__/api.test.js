@@ -36,10 +36,28 @@ describe("GET api/topics", () =>{
 })
 
 describe("GET api/articles/:article_id", () => {
-    test ("Responds with a 200 status", () => {
-        return request(app).get("/api/articles/1").expect(200)
+  test("Responds with a 200 status", () => {
+    return request(app).get("/api/articles/1").expect(200)
     })
-    test("Responds with an `article` object with the properties of `author`, `title`,`article_id`,`body`,`topic`,`created_at`, `votes`", () => {
-        return request(app).get("/api/articles/:article")
+  test("Responds with an `article` object with the properties of `author`, `title`,`article_id`,`body`,`topic`,`created_at`, `votes`", () => {
+    return request(app).get("/api/articles/2")
+     .then(({body}) => {
+      const article = body.rows[0]
+  
+      expect(article).toEqual(
+        expect.objectContaining({
+         author: expect.any(String),
+         votes: expect.any(Number),
+         article_id: expect.any(Number),
+         created_at: expect.any(String),
+         body: expect.any(String),
+         topic: expect.any(String),
+         title: expect.any(String)
+        })
+      )
+    
+
+
+        })
     })
 })

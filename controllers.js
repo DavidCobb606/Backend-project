@@ -10,13 +10,15 @@ exports.getTopics = (req,res, next) =>{
 }
 
 exports.getArticle = (req,res, next) => {
-    const {article_id} = req.params;
-    console.log(req.params)
-    fetchArticle()
-    .then((articles) => {
-    console.log(articles)
- return res.status(200).send({msg: "all good"})
-})
+    const {article_id} = req.params.article_id;
+  
+    fetchArticle(req.params.article_id)
+    .then(({rows}) => {    
+ return res.status(200).send({rows})
+}) 
+    .catch((err) => {
+        next(err)
+    })
    
  
 
