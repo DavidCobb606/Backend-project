@@ -35,11 +35,11 @@ describe("GET api/topics", () =>{
     })
 })
 
-describe("GET api/articles/:article_id", () => {
+describe.only("GET api/articles/:article_id", () => {
   test("Responds with a 200 status", () => {
     return request(app).get("/api/articles/1").expect(200)
     })
-  test("Responds with an `article` object with the properties of `author`, `title`,`article_id`,`body`,`topic`,`created_at`, `votes`", () => {
+  test.only("Responds with an `article` object with the properties of `author`, `title`,`article_id`,`body`,`topic`,`created_at`, `votes`, `comment_count`", () => {
     return request(app).get("/api/articles/2")
      .then(({body}) => {
       const article = body.articles[0]
@@ -52,7 +52,8 @@ describe("GET api/articles/:article_id", () => {
          created_at: expect.any(String),
          body: expect.any(String),
          topic: expect.any(String),
-         title: expect.any(String)
+         title: expect.any(String),
+         comment_count: expect.any(Number)
         }))
     })
     })
@@ -70,10 +71,14 @@ describe("GET api/articles/:article_id", () => {
     test ("If the client has entered an article that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
       return request(app)
       .get("/api/articles/1234567")
+      .expect(404)
       .then(({body}) => {
+        
         expect(body.msg).toBe("Not Found")
       })
     }) 
+
+    
 })
 
 describe("GET api/users", () => {
@@ -100,9 +105,6 @@ describe("GET api/users", () => {
   })
 
 })
-
-
-
 
 describe("PATCH /api/articles/:article_id",() => {
   test("Server responds with a 200 status and an updated article where the votes have been modified accordingly", () => {
