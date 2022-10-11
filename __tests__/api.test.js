@@ -6,6 +6,7 @@ const testData = require("../db/data/test-data");
 const users = require("../db/data/test-data/users");
 
 
+
 beforeEach(() => seed(testData));
 
 afterAll(() => {
@@ -28,12 +29,10 @@ describe("GET api/topics", () =>{
             expect.objectContaining({
             slug: expect.any(String),
             description: expect.any(String)
-                })
-             ) 
+                })) 
             })   
         })
     })
- 
 })
 
 describe("GET api/articles/:article_id", () => {
@@ -44,7 +43,7 @@ describe("GET api/articles/:article_id", () => {
     return request(app).get("/api/articles/2")
      .then(({body}) => {
       const article = body.rows[0]
-  
+      expect(article.article_id).toEqual(2)
       expect(article).toEqual(
         expect.objectContaining({
          author: expect.any(String),
@@ -54,15 +53,30 @@ describe("GET api/articles/:article_id", () => {
          body: expect.any(String),
          topic: expect.any(String),
          title: expect.any(String)
-        })
-      )
+        }))
     })
     })
 
+    test ("If the client has entered an article id that isn't valid, the server should respond with `400: Bad Request`", () => {
+
+      return request(app)
+      .get("/api/articles/wrong-id")
+      .expect(400)
+      .then(({body}) => {
+        expect(body.msg).toBe("Bad Request")
+      })
   
+    })
+    test ("If the client has entered an article that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
+      return request(app)
+      .get("/api/articles/1234567")
+      .then(({body}) => {
+        expect(body.msg).toBe("Not Found")
+      })
+    }) 
 })
 
-describe.only("GET api/users", () => {
+describe("GET api/users", () => {
   test("Responds with a 200 status", () => {
     return request(app).get("/api/users").expect(200)
   })
@@ -82,11 +96,11 @@ describe.only("GET api/users", () => {
                 username: expect.any(String),
                 name: expect.any(String),
                 avatar_url: expect.any(String)
-            })
-        )
-    })
+            }))
+          })
+        })
+  })})  
 
-    })
-    
 
-  })})
+   
+
