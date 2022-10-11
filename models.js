@@ -28,4 +28,7 @@ exports.fetchUsers = () => {
     FROM users;
     `
     return db.query(command)
+    .then(({rows: users}) => {
+        return users
+    })
 }

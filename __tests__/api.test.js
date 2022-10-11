@@ -3,7 +3,7 @@ const app = require("../app")
 const db=require("../db/connection")
 const seed = require("../db/seeds/seed")
 const testData = require("../db/data/test-data");
-const users = require("../db/data/test-data/users");
+
 
 
 
@@ -84,8 +84,7 @@ describe("GET api/users", () => {
     return request(app)
     .get("/api/users")
     .then(({body}) => {
-        const users = body.rows
-        console.log(users)
+        const users = body.users
 
     expect(users).toBeInstanceOf(Array)
     expect(users.length).toBe(4)

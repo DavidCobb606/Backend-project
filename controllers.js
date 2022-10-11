@@ -28,9 +28,9 @@ exports.getArticle = (req,res, next) => {
 }
 exports.getUsers = (req,res, next) => {
     fetchUsers()
-    .then(({rows}) => {
-       
-        return res.status(200).send({rows})
+    .then((users) => {
+       console.log(users)
+        return res.status(200).send({users})
     })
     .catch((err) => {
         next(err)
