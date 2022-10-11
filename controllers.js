@@ -10,15 +10,19 @@ exports.getTopics = (req,res, next) =>{
 }
 
 exports.getArticle = (req,res, next) => {
-    const {article_id} = req.params.article_id;
   
     fetchArticle(req.params.article_id)
-    .then(({rows}) => {    
- return res.status(200).send({rows})
+    .then(({rows}) => {  
+       if(rows.length ===0){
+        return Promise.reject({
+            status: 404,
+            msg: "Not Found"
+        })
+       }else{
+            return res.status(200).send({rows})
+       }
 }) 
-    .catch((err) => {
-        next(err)
-    })
+    .catch(next)
    
  
 
