@@ -136,8 +136,12 @@ describe("PATCH /api/articles/:article_id",() => {
     .patch("/api/articles/article-id-number")
     .send({inc_votes: 100})
     .expect(400)
-
-
+  })
+  test.only("Server responds with `400: Bad Request` if the client has sent an invalid key", () => {
+    return request(app)
+    .patch("/api/articles/1")
+    .send({wrong: 100})
+    .expect(400)
   })
   test("Server responds with `404: Not Found` if the client has entered an article id that is valid but doesn't exist", () => {
     return request(app)
@@ -145,6 +149,7 @@ describe("PATCH /api/articles/:article_id",() => {
     .send({inc_votes: 200})
     .expect(404)
   })
+
 })
    
 
