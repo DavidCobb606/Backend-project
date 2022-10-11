@@ -1,8 +1,10 @@
-const {fetchTopics, fetchArticle, fetchAndModifyArticle} = require("./models.js")
+
+const {fetchTopics, fetchArticle, fetchUsers, fetchAndModifyArticle} = require("./models.js")
 
 exports.getTopics = (req,res, next) =>{
     fetchTopics()
-    .then((topics) => {        return res.status(200).send({topics})        
+    .then((topics) => {        
+        return res.status(200).send({topics})        
     })
     .catch((err) => {
         next(err)
@@ -12,35 +14,36 @@ exports.getTopics = (req,res, next) =>{
 exports.getArticle = (req,res, next) => {
   
     fetchArticle(req.params.article_id)
-    .then(({rows}) => {  
-       if(rows.length ===0){
-        return Promise.reject({
-            status: 404,
-            msg: "Not Found"
-        })
-       }else{
-            return res.status(200).send({rows})
-       }
-}) 
-    .catch(next)
-   
- 
-
-   
+    .then((articles) => {  
+     
+          return res.status(200).send({articles})  
+        }) 
+    .catch(next)  
 }
+
+exports.getUsers = (req,res, next) => {
+    fetchUsers()
+    .then((users) => {
+       
+        return res.status(200).send({users})
+    })
+    .catch((err) => {
+        next(err)
+    })}
 
 exports.getModifiedArticle = (req,res,next) =>{
+    const id = req.params.article_id;
+    const votesValue = req.body.inc_votes
+   
 
-    fetchAndModifyArticle().
-    then(({rows}) => {
-        if(rows.length ===0){
-            return Promise.reject({
-                status: 404,
-                msg: "Not Found"
-            })
-        } else {
-            return res.status(200).send({rows})
-        }
-    })
     
+    fetchAndModifyArticle(id, votesValue).
+    then((articles) => {
+        console.log(articles)
+       return res.status(200).send({articles})        
+    })
+    .catch(next)
 }
+     
+
+    

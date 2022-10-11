@@ -18,20 +18,50 @@ exports.fetchArticle = (id) => {
     FROM articles    
     WHERE article_id = $1
     `
-  
-    return db.query(command, [id])
 
+    return db.query(command, [id])
+    .then(({rows: articles}) => {
+       
+        if (articles.length ===0){
+            return Promise.reject({
+                status: 404,
+                msg: "Not Found"
+            })
+        
+        }
+        else return articles
+    })
 }
 
-exports.fetchAndModifyArticle = (id) =>{
+exports.fetchUsers = () => {
     const command = `
-    UPDATE votes
-    FROM articles
-    SET votes = 150
-    WHERE article_id = $1
+    SELECT *
+    FROM users;
+    `
+    return db.query(command)
+    .then(({rows: users}) => {
+        return users
+    })
+}
 
+exports.fetchAndModifyArticle = (id, votesValue) =>{
+    const command = `
+   UPDATE articles 
+   SET votes = $2
+   WHERE article_id = $1
+   RETURNING *
     `
 
-    return db.query(command, [id])
+    return db.query(command, [id, votesValue])
+    .then(({rows: articles}) => {
+        console.log(articles)
+        if (articles.length ===0){
+            return Promise.reject({
+                status:404,
+                msg: "Not Found"
+            })
+        }
+        return articles[0]
+    })
 }
 
