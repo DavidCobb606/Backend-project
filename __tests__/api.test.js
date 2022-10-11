@@ -81,3 +81,14 @@ describe("GET api/articles/:article_id", () => {
   })
     
 })
+
+describe("PATCH /api/articles/:article_id",() => {
+  test("Server responds with a 200 status if request is successfull", () => {
+    return request(app)
+    .patch("/api/articles/2")
+    .expect(200)
+  })
+
+
+})
+

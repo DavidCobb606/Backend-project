@@ -1,4 +1,4 @@
-const {fetchTopics, fetchArticle} = require("./models.js")
+const {fetchTopics, fetchArticle, fetchAndModifyArticle} = require("./models.js")
 
 exports.getTopics = (req,res, next) =>{
     fetchTopics()
@@ -27,4 +27,20 @@ exports.getArticle = (req,res, next) => {
  
 
    
+}
+
+exports.getModifiedArticle = (req,res,next) =>{
+
+    fetchAndModifyArticle().
+    then(({rows}) => {
+        if(rows.length ===0){
+            return Promise.reject({
+                status: 404,
+                msg: "Not Found"
+            })
+        } else {
+            return res.status(200).send({rows})
+        }
+    })
+    
 }

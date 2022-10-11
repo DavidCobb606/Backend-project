@@ -15,11 +15,23 @@ exports.fetchTopics = () => {
 exports.fetchArticle = (id) => {
     const command = `
     SELECT *
-    FROM articles
+    FROM articles    
     WHERE article_id = $1
     `
   
     return db.query(command, [id])
 
+}
+
+exports.fetchAndModifyArticle = (id) =>{
+    const command = `
+    UPDATE votes
+    FROM articles
+    SET votes = 150
+    WHERE article_id = $1
+
+    `
+
+    return db.query(command, [id])
 }
 
