@@ -137,7 +137,7 @@ describe("PATCH /api/articles/:article_id",() => {
     .send({inc_votes: 100})
     .expect(400)
   })
-  test.only("Server responds with `400: Bad Request` if the client has sent an invalid key", () => {
+  test("Server responds with `400: Bad Request` if the client has sent an invalid key", () => {
     return request(app)
     .patch("/api/articles/1")
     .send({wrong: 100})
