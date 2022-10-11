@@ -42,7 +42,7 @@ describe("GET api/articles/:article_id", () => {
   test("Responds with an `article` object with the properties of `author`, `title`,`article_id`,`body`,`topic`,`created_at`, `votes`", () => {
     return request(app).get("/api/articles/2")
      .then(({body}) => {
-      const article = body.rows[0]
+      const article = body.articles[0]
       expect(article.article_id).toEqual(2)
       expect(article).toEqual(
         expect.objectContaining({
@@ -88,8 +88,7 @@ describe("GET api/users", () => {
 
     expect(users).toBeInstanceOf(Array)
     expect(users.length).toBe(4)
-    
-    users.forEach((element) => {
+     users.forEach((element) => {
         expect(element).toEqual(
             expect.objectContaining({
                 username: expect.any(String),
@@ -98,8 +97,59 @@ describe("GET api/users", () => {
             }))
           })
         })
-  })})  
+  })
+
+})
 
 
+
+
+describe("PATCH /api/articles/:article_id",() => {
+  test("Server responds with a 200 status and an updated article where the votes have been modified accordingly", () => {
+    return request(app)
+    .patch("/api/articles/2")
+    .send({inc_votes: 100})
+    .then(({body}) => {
+      expect(body.articles.article_id).toEqual(2)
+      expect(200)
+      expect(body).toEqual({
+        articles: {
+          article_id: 2,
+          title: expect.any(String),
+          topic: expect.any(String),
+          body: expect.any(String),
+          created_at: expect.any(String),
+          votes: 100,
+          author: expect.any(String)
+        }
+      })
+    })
+  })
+  test ("Server responds with `400: Bad Request` if the client has sent the body in an invalid form", () => {
+    return request(app)
+    .patch("/api/articles/1")
+    .send({inc_votes: "Lots of votes"})
+    .expect(400)
+  })
+  test("Server responds with `400: Bad Request if the client has sent an invalid id`", () => {
+    return request(app)
+    .patch("/api/articles/article-id-number")
+    .send({inc_votes: 100})
+    .expect(400)
+  })
+  test.only("Server responds with `400: Bad Request` if the client has sent an invalid key", () => {
+    return request(app)
+    .patch("/api/articles/1")
+    .send({wrong: 100})
+    .expect(400)
+  })
+  test("Server responds with `404: Not Found` if the client has entered an article id that is valid but doesn't exist", () => {
+    return request(app)
+    .patch("/api/articles/10897")
+    .send({inc_votes: 200})
+    .expect(404)
+  })
+
+})
    
 
