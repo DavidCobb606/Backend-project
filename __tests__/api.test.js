@@ -55,9 +55,29 @@ describe("GET api/articles/:article_id", () => {
          title: expect.any(String)
         })
       )
+
+      expect(article.article_id).toEqual(2)
     
 
 
         })
     })
+  test ("If the client has entered an article id that isn't valid, the server should respond with `400: Bad Request`", () => {
+
+    return request(app)
+    .get("/api/articles/wrong-id")
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("Bad Request")
+    })
+
+  })
+  test ("If the client has entered an article that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
+    return request(app)
+    .get("/api/articles/1234567")
+    .then(({body}) => {
+      expect(body.msg).toBe("Not Found")
+    })
+  })
+    
 })
