@@ -126,11 +126,19 @@ describe("PATCH /api/articles/:article_id",() => {
       })
     })
   })
-  test ("Server responds with `400: Bad Request` if the client has entered an article id that isn't valid ", () => {
+  test ("Server responds with `400: Bad Request` if the client has sent the body in an invalid form", () => {
     return request(app)
     .patch("/api/articles/1")
     .send({inc_votes: "Lots of votes"})
     .expect(400)
+  })
+  test("Server responds with `400: Bad Request if the client has sent an invalid id`", () => {
+    return request(app)
+    .patch("/api/articles/article-id-number")
+    .send({inc_votes: 100})
+    .expect(400)
+
+
   })
   test("Server responds with `404: Not Found` if the client has entered an article id that is valid but doesn't exist", () => {
     return request(app)
