@@ -1,5 +1,5 @@
 
-const {fetchTopics, fetchArticle, fetchUsers, fetchAndModifyArticle} = require("./models.js")
+const {fetchTopics, fetchArticles, fetchUsers, fetchAndModifyArticle, fetchArticleById, getArticles} = require("./models.js")
 
 exports.getTopics = (req,res, next) =>{
     fetchTopics()
@@ -11,9 +11,9 @@ exports.getTopics = (req,res, next) =>{
     })
 }
 
-exports.getArticle = (req,res, next) => {
+exports.getArticleById = (req,res, next) => {
   
-    fetchArticle(req.params.article_id)
+    fetchArticleById(req.params.article_id)
     .then((articles) => {  
      
           return res.status(200).send({articles})  
@@ -39,10 +39,18 @@ exports.getModifiedArticle = (req,res,next) =>{
     
     fetchAndModifyArticle(id, votesValue).
     then((articles) => {
-        console.log(articles)
+        
        return res.status(200).send({articles})        
     })
     .catch(next)
+}
+
+exports.getArticles =  (req,res,next) => {
+    
+    fetchArticles()
+    .then((articles) => {
+        console.log(articles)
+    })
 }
      
 

@@ -12,7 +12,7 @@ exports.fetchTopics = () => {
     
 }
 
-exports.fetchArticle = (id) => {
+exports.fetchArticleById = (id) => {
     const command = `
     SELECT *
     FROM articles    
@@ -65,3 +65,24 @@ exports.fetchAndModifyArticle = (id, votesValue) =>{
     })
 }
 
+exports.fetchArticles = () => {
+    
+    const command = `
+    SELECT *
+    FROM articles
+    ORDER BY created_at DESC
+    
+    `
+    return db.query(command)
+    .then(({rows:articles}) => {
+        
+        if (articles.length ===0){
+        return Promise.reject({
+            status:404,
+            msg: "Not Found"
+        })
+    }
+    return articles
+    })
+    
+}

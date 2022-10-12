@@ -151,5 +151,23 @@ describe("PATCH /api/articles/:article_id",() => {
   })
 
 })
+
+describe.only("GET /api/articles", () => {
+  test ("The server should respond with a 200 status", () => {
+    return request(app).get("/api/topics").expect(200)
+})
+  test ("The server should respond with an array of article objects with the properties `author`, `title`, `article_id`, `topic`, `created_at`, `votes`, `comment_count`", () => {
+
+    return request(app).get("/api/articles")
+    .then(({body}) => {
+      const articles = body.articles
+      expect(articles).toBeInstanceOf(Array);
+      
+    })
+
+  })
+
+
+})
    
 
