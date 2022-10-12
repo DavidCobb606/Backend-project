@@ -15,12 +15,11 @@ exports.getArticle = (req,res, next) => {
   
     fetchArticle(req.params.article_id)
     .then((articles) => {  
-     
+            
           return res.status(200).send({articles})  
         }) 
     .catch(next)  
 }
-
 exports.getUsers = (req,res, next) => {
     fetchUsers()
     .then((users) => {
@@ -33,13 +32,12 @@ exports.getUsers = (req,res, next) => {
 
 exports.getModifiedArticle = (req,res,next) =>{
     const id = req.params.article_id;
-    const votesValue = req.body.inc_votes
-   
+    const votesValue = req.body.inc_votes 
 
     
     fetchAndModifyArticle(id, votesValue).
     then((articles) => {
-        console.log(articles)
+        
        return res.status(200).send({articles})        
     })
     .catch(next)

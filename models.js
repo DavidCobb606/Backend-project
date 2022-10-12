@@ -13,23 +13,27 @@ exports.fetchTopics = () => {
 }
 
 exports.fetchArticle = (id) => {
-    const command = `
-    SELECT *
-    FROM articles    
-    WHERE article_id = $1
-    `
-
-    return db.query(command, [id])
+    
+    const count = `
+    SELECT articles.article_id, articles.author, articles.body, articles.title, articles.topic, articles.votes, articles.created_at, (COUNT(comments.article_id)) AS comment_count
+    FROM articles
+    LEFT JOIN comments
+        ON articles.article_id = comments.article_id
+    WHERE articles.article_id = $1
+    GROUP BY articles.article_id, articles.author, articles.body, articles.title, articles.topic, articles.votes, articles.created_at;`
+    
+    return db.query(count, [id])
     .then(({rows: articles}) => {
-       
+
         if (articles.length ===0){
             return Promise.reject({
                 status: 404,
                 msg: "Not Found"
             })
-        
+                 
         }
-        else return articles
+        else return articles       
+        
     })
 }
 
