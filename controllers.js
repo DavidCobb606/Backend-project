@@ -45,23 +45,19 @@ exports.getModifiedArticle = (req,res,next) =>{
 
 exports.getArticles =  (req,res,next) => {
    
-    const topic = req.query.topic
-
+    const {topic} = req.query
    
-    fetchArticles(topic)
+    fetchArticles()
     .then((articles) => {
-        
-        if(topic !== undefined){
-          const queryArray = articles.filter((element) => {
-                return element.topic === "cats"
-            })
-            
-            return res.status(200).send({queryArray})
-        }
-       
-        return res.status(200).send({articles})
 
+      return res.status(200).send({articles})
     })
+        
+      
+        
+
+    
+    .catch(next)
 }
      
 

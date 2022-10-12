@@ -69,9 +69,9 @@ exports.fetchAndModifyArticle = (id, votesValue) =>{
     })
 }
 
-exports.fetchArticles = (topic) => {
+exports.fetchArticles = () => {
     
-    const command = `
+    let command = `
     SELECT articles.article_id, articles.author, articles.body, articles.title, articles.topic, articles.votes, articles.created_at, (COUNT(comments.article_id)) AS comment_count
     FROM articles
     LEFT JOIN comments
@@ -80,11 +80,21 @@ exports.fetchArticles = (topic) => {
        ORDER BY created_at DESC;
    
     `
+
+//     Parameters are not supported in GROUP or ORDER BY clauses within PostgreSQL. This means that whenever user input is used in these statements it could be open to SQL injection. In these situations it is extremely important to sanitise and input before interpolating it into the statement.
+
+// One easy way to prevent any malicious user input being added to the SQL statement is to use a "whitelist" strategy: check whether the variable matches one of a list of allowed values and reject the request if it doesn't.
+    let queryValues = []
+
+    if(req.query.topic !== undefined){
+        command = `SELECT `
+    }
+    //unshift the query
+    //shift the select
     
     return db.query(command)
-    .then(({rows:articles}) => {
-        
-        
+    .then(({rows:articles}) => {        
+    
         if (articles.length ===0){
         return Promise.reject({
             status:404,

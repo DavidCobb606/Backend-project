@@ -182,7 +182,7 @@ describe("GET /api/articles", () => {
         expect(articles).toBeSortedBy("created_at", {descending: true})
       })
     })
-    test.only("The endpoint /api/articles should accept the query `topic`, which filters the article by whichever topic the client chooses in the query.", () => {
+    test("The endpoint /api/articles should accept the query `topic`, which filters the article by whichever topic the client chooses in the query.", () => {
       return request(app)
       .get("/api/articles/?topic=cats")
       .then(({body}) => {
@@ -205,12 +205,22 @@ describe("GET /api/articles", () => {
       })                                                                   
 
     })
-    test.only("If the client enters a query id that isn't valid, the server should respond with `400: Bad Request", () => { return request(app)
+    test("If the client enters a query id that isn't valid, the server should respond with `400: Bad Request", () => { return request(app)
         .get("/api/articles/?not-a-topic=alsonotatopic")
-        .expect({400: "Bad Request"})
+        .expect(400)
+        .then(({body}) => {
+          expect(body.msg).toBe("Bad Request")
+        })
+        
 
     })
     test("If the client enters a query id that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
+      return request(app)
+      .get("/api/articles/?topic=computers")
+      .expect(404)
+      .then(({body}) => {
+        expect(body.msg).toBe("Not Found")
+      })
 
     })
 
