@@ -15,12 +15,11 @@ exports.getArticleById = (req,res, next) => {
   
     fetchArticleById(req.params.article_id)
     .then((articles) => {  
-     
+            
           return res.status(200).send({articles})  
         }) 
     .catch(next)  
 }
-
 exports.getUsers = (req,res, next) => {
     fetchUsers()
     .then((users) => {
@@ -33,9 +32,8 @@ exports.getUsers = (req,res, next) => {
 
 exports.getModifiedArticle = (req,res,next) =>{
     const id = req.params.article_id;
-    const votesValue = req.body.inc_votes
-   
-
+    const votesValue = req.body.inc_votes 
+    console.log(req.params)
     
     fetchAndModifyArticle(id, votesValue).
     then((articles) => {
@@ -46,10 +44,23 @@ exports.getModifiedArticle = (req,res,next) =>{
 }
 
 exports.getArticles =  (req,res,next) => {
-    
-    fetchArticles()
+   
+    const topic = req.query.topic
+
+   
+    fetchArticles(topic)
     .then((articles) => {
-        console.log(articles)
+        
+        if(topic !== undefined){
+          const queryArray = articles.filter((element) => {
+                return element.topic === "cats"
+            })
+            
+            return res.status(200).send({queryArray})
+        }
+       
+        return res.status(200).send({articles})
+
     })
 }
      

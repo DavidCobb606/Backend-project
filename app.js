@@ -14,7 +14,6 @@ app.get("/api/users", getUsers)
 app.patch("/api/articles/:article_id", getModifiedArticle)
 
 
-
 app.all("/*", (req,res) => {
     res.status(404).send({msg: "Route not found"})
 })

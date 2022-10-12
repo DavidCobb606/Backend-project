@@ -4,9 +4,6 @@ const db=require("../db/connection")
 const seed = require("../db/seeds/seed")
 const testData = require("../db/data/test-data");
 
-
-
-
 beforeEach(() => seed(testData));
 
 afterAll(() => {
@@ -39,7 +36,7 @@ describe("GET api/articles/:article_id", () => {
   test("Responds with a 200 status", () => {
     return request(app).get("/api/articles/1").expect(200)
     })
-  test("Responds with an `article` object with the properties of `author`, `title`,`article_id`,`body`,`topic`,`created_at`, `votes`", () => {
+  test("Responds with an `article` object with the properties of `author`, `title`,`article_id`,`body`,`topic`,`created_at`, `votes`, `comment_count`", () => {
     return request(app).get("/api/articles/2")
      .then(({body}) => {
       const article = body.articles[0]
@@ -52,7 +49,8 @@ describe("GET api/articles/:article_id", () => {
          created_at: expect.any(String),
          body: expect.any(String),
          topic: expect.any(String),
-         title: expect.any(String)
+         title: expect.any(String),
+         comment_count: "0"
         }))
     })
     })
@@ -70,10 +68,13 @@ describe("GET api/articles/:article_id", () => {
     test ("If the client has entered an article that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
       return request(app)
       .get("/api/articles/1234567")
+      .expect(404)
       .then(({body}) => {
+        
         expect(body.msg).toBe("Not Found")
       })
     }) 
+   
 })
 
 describe("GET api/users", () => {
@@ -100,9 +101,6 @@ describe("GET api/users", () => {
   })
 
 })
-
-
-
 
 describe("PATCH /api/articles/:article_id",() => {
   test("Server responds with a 200 status and an updated article where the votes have been modified accordingly", () => {
@@ -152,22 +150,73 @@ describe("PATCH /api/articles/:article_id",() => {
 
 })
 
-describe.only("GET /api/articles", () => {
+describe("GET /api/articles", () => {
   test ("The server should respond with a 200 status", () => {
-    return request(app).get("/api/topics").expect(200)
+    return request(app).get("/api/articles").expect(200)
 })
-  test ("The server should respond with an array of article objects with the properties `author`, `title`, `article_id`, `topic`, `created_at`, `votes`, `comment_count`", () => {
+  test ("If there is no query, the server should respond with an array of article objects with the properties `author`, `title`, `article_id`, `topic`, `created_at`, `votes`, `comment_count`", () => {
 
     return request(app).get("/api/articles")
     .then(({body}) => {
       const articles = body.articles
       expect(articles).toBeInstanceOf(Array);
-      
+      articles.forEach((element) => {
+        expect(element).toEqual(
+          expect.objectContaining({
+            author:expect.any(String),
+            votes: expect.any(Number),
+            article_id: expect.any(Number),
+            created_at: expect.any(String),
+            body: expect.any(String),
+            topic: expect.any(String),
+            title: expect.any(String),
+            comment_count: expect.any(String)
+        })
+      )})    
+    })      
+    })
+    test("The array of objects should be sorted by the date of created, going from most recent to least recent", () => {
+      return request(app).get("/api/articles")
+      .then(({body}) => {
+        const articles = body.articles
+        expect(articles).toBeSortedBy("created_at", {descending: true})
+      })
+    })
+    test.only("The endpoint /api/articles should accept the query `topic`, which filters the article by whichever topic the client chooses in the query.", () => {
+      return request(app)
+      .get("/api/articles/?topic=cats")
+      .then(({body}) => {
+       
+        const articles = body.queryArray;
+        articles.forEach((element) => {
+          expect(element).toEqual({
+          article_id: expect.any(Number),
+          title: expect.any(String),
+          topic: "cats",
+          body: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+          author: expect.any(String),
+          comment_count: expect.any(String)
+
+        })
+        })
+        
+      })                                                                   
+
+    })
+    test.only("If the client enters a query id that isn't valid, the server should respond with `400: Bad Request", () => { return request(app)
+        .get("/api/articles/?not-a-topic=alsonotatopic")
+        .expect({400: "Bad Request"})
+
+    })
+    test("If the client enters a query id that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
+
     })
 
   })
 
 
-})
+
    
 
