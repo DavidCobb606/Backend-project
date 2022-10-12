@@ -1,5 +1,5 @@
 
-const {fetchTopics, fetchArticle, fetchUsers, fetchAndModifyArticle} = require("./models.js")
+const {fetchTopics, fetchArticle, fetchUsers, fetchAndModifyArticle, fetchCommentsForArticle} = require("./models.js")
 
 exports.getTopics = (req,res, next) =>{
     fetchTopics()
@@ -43,5 +43,13 @@ exports.getModifiedArticle = (req,res,next) =>{
     .catch(next)
 }
      
+exports.getCommentsForArticle = (req,res,next) => {
+    const id = req.params.article_id
+    console.log(id)
 
+    fetchCommentsForArticle(id)
+    .then((articles) => {
+        console.log(articles)
+    })
+}
     
