@@ -4,9 +4,6 @@ const db=require("../db/connection")
 const seed = require("../db/seeds/seed")
 const testData = require("../db/data/test-data");
 
-
-
-
 beforeEach(() => seed(testData));
 
 afterAll(() => {
@@ -35,11 +32,11 @@ describe("GET api/topics", () =>{
     })
 })
 
-describe.only("GET api/articles/:article_id", () => {
+describe("GET api/articles/:article_id", () => {
   test("Responds with a 200 status", () => {
     return request(app).get("/api/articles/1").expect(200)
     })
-  test.only("Responds with an `article` object with the properties of `author`, `title`,`article_id`,`body`,`topic`,`created_at`, `votes`, `comment_count`", () => {
+  test("Responds with an `article` object with the properties of `author`, `title`,`article_id`,`body`,`topic`,`created_at`, `votes`, `comment_count`", () => {
     return request(app).get("/api/articles/2")
      .then(({body}) => {
       const article = body.articles[0]
@@ -53,7 +50,7 @@ describe.only("GET api/articles/:article_id", () => {
          body: expect.any(String),
          topic: expect.any(String),
          title: expect.any(String),
-         comment_count: expect.any(Number)
+         comment_count: "0"
         }))
     })
     })
@@ -78,6 +75,7 @@ describe.only("GET api/articles/:article_id", () => {
       })
     }) 
 
+  
     
 })
 

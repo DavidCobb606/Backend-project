@@ -15,13 +15,11 @@ exports.getArticle = (req,res, next) => {
   
     fetchArticle(req.params.article_id)
     .then((articles) => {  
-        console.log(articles)
-    
+            
           return res.status(200).send({articles})  
         }) 
     .catch(next)  
 }
-
 exports.getUsers = (req,res, next) => {
     fetchUsers()
     .then((users) => {
