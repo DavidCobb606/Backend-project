@@ -1,1 +1,7 @@
 You are now connected to database "nc_news_test" as user "david".
+ comment_id | votes |     created_at      |    author     |          body          
+------------+-------+---------------------+---------------+------------------------
+         11 |     0 | 2020-09-20 00:10:00 | icellusedkars | Ambidextrous marsupial
+         10 |     0 | 2020-06-20 08:24:00 | icellusedkars | git push origin master
+(2 rows)
+
