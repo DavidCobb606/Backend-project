@@ -46,25 +46,20 @@ exports.getModifiedArticle = (req,res,next) =>{
 exports.getArticles =  (req,res,next) => {
    
     const {topic} = req.query
+    queryTopic = req.query.topic
     
   const lengthCheck = Object.keys(req.query).length
  
-
-  if(lengthCheck === 0 || (lengthCheck === 1 && req.query.topic !== undefined)){
-   
-    fetchArticles(topic)
-    .then((articles) => {
-        
-
+   fetchArticles(topic, lengthCheck, queryTopic)
+    .then((articles) => {        
+        if (articles !== undefined){
       return res.status(200).send({articles})
+    } else if (articles === undefined){
+        return reject
+    }
     })
     .catch(next)         
-} else {
- 
-    return res.status(400).send({msg: "Bad Request"})
-}
-    
-    
+  
 }
      
 

@@ -2,7 +2,8 @@ const request = require("supertest");
 const app = require("../app")
 const db=require("../db/connection")
 const seed = require("../db/seeds/seed")
-const testData = require("../db/data/test-data");
+const testData = require("../db/data/test-data")
+const sorted = require("jest-sorted")
 
 beforeEach(() => seed(testData));
 
@@ -55,7 +56,7 @@ describe("GET api/articles/:article_id", () => {
     })
     })
 
-    test ("If the client has entered an article id that isn't valid, the server should respond with `400: Bad Request`", () => {
+    test("If the client has entered an article id that isn't valid, the server should respond with `400: Bad Request`", () => {
 
       return request(app)
       .get("/api/articles/wrong-id")
@@ -159,7 +160,8 @@ describe("GET /api/articles", () => {
     return request(app).get("/api/articles")
     .then(({body}) => {
       const articles = body.articles
-      expect(articles).toBeInstanceOf(Array);
+      expect(articles).toBeInstanceOf(Array)
+      expect(articles.length).toBeGreaterThan(0)
       articles.forEach((element) => {
         expect(element).toEqual(
           expect.objectContaining({
@@ -188,6 +190,7 @@ describe("GET /api/articles", () => {
       .then(({body}) => {
        
         const articles = body.articles;
+        expect(articles.length).toBeGreaterThan(0)
         articles.forEach((element) => {
           expect(element).toEqual({
           article_id: expect.any(Number),
@@ -205,14 +208,14 @@ describe("GET /api/articles", () => {
       })                                                                   
 
     })
-    test("If the client enters a query id that isn't valid, the server should respond with `400: Bad Request", () => { return request(app)
-        .get("/api/articles/?not-a-topic=alsonotatopic")
+    test("If the client enters a query id where the key isn't valid but the value is valid, the server should respond with `400: Bad Request", () => { return request(app)
+        .get("/api/articles/?not-a-topic=cats")
         .expect(400)
         .then(({body}) => {
+          console.log(body)
           
           expect(body.msg).toBe("Bad Request")
-        })
-        
+        })        
 
     })
     test("If the client enters a query id that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
@@ -222,9 +225,8 @@ describe("GET /api/articles", () => {
       .then(({body}) => {
         expect(body.msg).toBe("Not Found")
       })
-
     })
-
+   //The final amendment request was for a test that checks that if we enter a valid topic but there are no articles for it, it will return an empty array. But there are only 2 topics - cats and mitch. I'm not sure how I would test for this and successfully return an empty array? And if I put in a topic that wasn't one of those then it would be equivalent to the above test where the topic is valid but doesn't exist - i.e. a 404 error?
   })
 
 
