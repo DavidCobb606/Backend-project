@@ -33,7 +33,7 @@ exports.getUsers = (req,res, next) => {
 exports.getModifiedArticle = (req,res,next) =>{
     const id = req.params.article_id;
     const votesValue = req.body.inc_votes 
-    console.log(req.params)
+  
     
     fetchAndModifyArticle(id, votesValue).
     then((articles) => {
@@ -46,18 +46,25 @@ exports.getModifiedArticle = (req,res,next) =>{
 exports.getArticles =  (req,res,next) => {
    
     const {topic} = req.query
+    
+  const lengthCheck = Object.keys(req.query).length
+ 
+
+  if(lengthCheck === 0 || (lengthCheck === 1 && req.query.topic !== undefined)){
    
-    fetchArticles()
+    fetchArticles(topic)
     .then((articles) => {
+        
 
       return res.status(200).send({articles})
     })
-        
-      
-        
-
+    .catch(next)         
+} else {
+ 
+    return res.status(400).send({msg: "Bad Request"})
+}
     
-    .catch(next)
+    
 }
      
 

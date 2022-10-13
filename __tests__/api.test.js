@@ -154,7 +154,7 @@ describe("GET /api/articles", () => {
   test ("The server should respond with a 200 status", () => {
     return request(app).get("/api/articles").expect(200)
 })
-  test ("If there is no query, the server should respond with an array of article objects with the properties `author`, `title`, `article_id`, `topic`, `created_at`, `votes`, `comment_count`", () => {
+  test("If there is no query, the server should respond with an array of article objects with the properties `author`, `title`, `article_id`, `topic`, `created_at`, `votes`, `comment_count`", () => {
 
     return request(app).get("/api/articles")
     .then(({body}) => {
@@ -187,7 +187,7 @@ describe("GET /api/articles", () => {
       .get("/api/articles/?topic=cats")
       .then(({body}) => {
        
-        const articles = body.queryArray;
+        const articles = body.articles;
         articles.forEach((element) => {
           expect(element).toEqual({
           article_id: expect.any(Number),
@@ -209,6 +209,7 @@ describe("GET /api/articles", () => {
         .get("/api/articles/?not-a-topic=alsonotatopic")
         .expect(400)
         .then(({body}) => {
+          
           expect(body.msg).toBe("Bad Request")
         })
         
