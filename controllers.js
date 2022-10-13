@@ -44,22 +44,16 @@ exports.getModifiedArticle = (req,res,next) =>{
 }
 
 exports.getArticles =  (req,res,next) => {
-   
-    const {topic} = req.query
-    queryTopic = req.query.topic
-    
-  const lengthCheck = Object.keys(req.query).length
- 
-   fetchArticles(topic, lengthCheck, queryTopic)
-    .then((articles) => {        
-        if (articles !== undefined){
-      return res.status(200).send({articles})
-    } else if (articles === undefined){
-        return reject
-    }
-    })
-    .catch(next)         
+   console.log("in controller")
+    const {topic} = req.query 
+
+   return fetchArticles(topic)   
+   .then((articles) => {   
   
+       res.status(200).send({articles})
+   })
+    .catch(next)         
+   
 }
      
 

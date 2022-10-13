@@ -151,7 +151,7 @@ describe("PATCH /api/articles/:article_id",() => {
 
 })
 
-describe("GET /api/articles", () => {
+describe.only("GET /api/articles", () => {
   test ("The server should respond with a 200 status", () => {
     return request(app).get("/api/articles").expect(200)
 })
@@ -172,7 +172,7 @@ describe("GET /api/articles", () => {
             body: expect.any(String),
             topic: expect.any(String),
             title: expect.any(String),
-            comment_count: expect.any(String)
+            comment_count: expect.any(Number)
         })
       )})    
     })      
@@ -188,6 +188,7 @@ describe("GET /api/articles", () => {
       return request(app)
       .get("/api/articles/?topic=cats")
       .then(({body}) => {
+        console.log(body.articles)
        
         const articles = body.articles;
         expect(articles.length).toBeGreaterThan(0)
@@ -200,7 +201,7 @@ describe("GET /api/articles", () => {
           created_at: expect.any(String),
           votes: expect.any(Number),
           author: expect.any(String),
-          comment_count: expect.any(String)
+          comment_count: expect.any(Number)
 
         })
         })
@@ -208,16 +209,7 @@ describe("GET /api/articles", () => {
       })                                                                   
 
     })
-    test("If the client enters a query id where the key isn't valid but the value is valid, the server should respond with `400: Bad Request", () => { return request(app)
-        .get("/api/articles/?not-a-topic=cats")
-        .expect(400)
-        .then(({body}) => {
-          console.log(body)
-          
-          expect(body.msg).toBe("Bad Request")
-        })        
-
-    })
+ 
     test("If the client enters a query id that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
       return request(app)
       .get("/api/articles/?topic=computers")
@@ -226,7 +218,15 @@ describe("GET /api/articles", () => {
         expect(body.msg).toBe("Not Found")
       })
     })
-   //The final amendment request was for a test that checks that if we enter a valid topic but there are no articles for it, it will return an empty array. But there are only 2 topics - cats and mitch. I'm not sure how I would test for this and successfully return an empty array? And if I put in a topic that wasn't one of those then it would be equivalent to the above test where the topic is valid but doesn't exist - i.e. a 404 error?
+ 
+    test("If the client enters a query where the topic exists but there are no articles", () => {
+      return request(app)
+      .get("/api/articles/?topic=paper")
+      .expect(200)
+      .then(({body}) => {
+        expect(body.articles).toEqual([])
+      })
+    })
   })
 
 
