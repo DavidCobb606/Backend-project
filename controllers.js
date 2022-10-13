@@ -44,12 +44,16 @@ exports.getModifiedArticle = (req,res,next) =>{
 }
      
 exports.getCommentsForArticle = (req,res,next) => {
-    const id = req.params.article_id
+    const id = req.params.article_id;
     console.log(id)
 
     fetchCommentsForArticle(id)
     .then((articles) => {
-        console.log(articles)
+        
+        return res.status(200).send({articles})
+    })
+    .catch((err) => {
+        next(err)
     })
 }
     

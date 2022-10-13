@@ -156,21 +156,45 @@ describe("PATCH /api/articles/:article_id",() => {
 describe.only("GET /api/articles/:article_id/comments", () => {
   test("Server should respond with an array of comments for the given article_id, where each comments should have the properties `comment_id`, `votes`, `created_at`, `author`, `body`", () => {
     return request(app)
-    .get("/api/articles/2/comments")
+    .get("/api/articles/1/comments")
     .expect(200)
     .then(({body}) => {
-      console.log(body.article)
+      console.log(body.articles)
       const article = body.articles
-      expect(article.article_id).toEqual(2);
-      expect(article).toEqual(
-        expect.objectContaining({
+      console.log(article)
+
+      article.forEach((element) => {    
+        expect(element).toEqual(
+          expect.objectContaining({
           comment_id: expect.any(Number),
           votes: expect.any(Number),
           created_at: expect.any(String),
           author: expect.any(String),
-          body: expect.any(String)
+          body: expect.any(String),
+          article_id: 1
         })
-      )
-    })
+      )})
+     })
   })
+  test ("If the client has entered an article id that isn't valid, the server should respond with `400: Bad Request`", () => {
+
+    return request(app)
+    .get("/api/articles/wrong-id/comments")
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("Bad Request")
+    })
+
+  })
+  test ("If the client has entered an article that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
+    return request(app)
+    .get("/api/articles/1234567/comments")
+    .expect(404)
+    .then(({body}) => {
+      
+      expect(body.msg).toBe("Not Found")
+    })
+  }) 
+
+
 })

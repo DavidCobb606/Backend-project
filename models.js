@@ -72,7 +72,7 @@ exports.fetchAndModifyArticle = (id, votesValue) =>{
 
 exports.fetchCommentsForArticle = (id) => {
     const command = 
-    `SELECT comments.comment_id, comments.votes, comments.created_at, comments.author, comments.body
+    `SELECT comments.comment_id, comments.votes, comments.created_at, comments.author, comments.body, articles.article_id
     FROM articles
     LEFT JOIN comments
         ON articles.article_id = comments.article_id
@@ -81,6 +81,13 @@ exports.fetchCommentsForArticle = (id) => {
 
     return db.query(command, [id])
     .then(({rows: articles }) => {
+
+        if (articles.length ===0){
+            return Promise.reject({
+                status:404,
+                msg: "Not Found"
+            })
+        }
         
         return articles
 
