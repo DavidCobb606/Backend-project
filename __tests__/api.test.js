@@ -266,7 +266,7 @@ describe.only("GET /api/articles/:article_id/comments", () => {
     })
 
   })
-  test ("If the client has entered an article that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
+  test ("If the client has entered an article id that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
     return request(app)
     .get("/api/articles/1234567/comments")
     .expect(404)
@@ -276,5 +276,24 @@ describe.only("GET /api/articles/:article_id/comments", () => {
     })
   }) 
 
+  testq("If the client has entered an article id that exists but has no instances of it, return a 200 status and an object with all of its properties null aside from its article_id.", () => {
+    return request(app)
+    .get("/api/articles/2/comments")
+    .expect(200)
+    .then(({body}) => {
+      console.log(body)
+
+      expect(body.articles[0]).toEqual(
+        expect.objectContaining({
+          comment_id: null,
+          votes: null,
+          created_at: null,
+          author: null,
+          body: null,
+          article_id: 2
+        })
+      )
+    })
+  })
 
 })

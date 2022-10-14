@@ -113,6 +113,8 @@ exports.fetchArticles = (topic) => {
 }
 
 exports.fetchCommentsForArticle = (id) => {
+    
+    
     const command = 
     `SELECT comments.comment_id, comments.votes, comments.created_at, comments.author, comments.body, articles.article_id
     FROM articles
