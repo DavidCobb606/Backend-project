@@ -114,6 +114,12 @@ exports.fetchArticles = (topic) => {
 
 exports.fetchCommentsForArticle = (id) => {
     
+    const idQuery = `
+    SELECT article_id
+    FROM articles
+    WHERE article_id = $1
+    `
+    
     
     const command = 
     `SELECT comments.comment_id, comments.votes, comments.created_at, comments.author, comments.body, articles.article_id
@@ -123,7 +129,8 @@ exports.fetchCommentsForArticle = (id) => {
     WHERE articles.article_id = $1
     ORDER BY created_at DESC;`
 
-    return db.query(command, [id])
+  
+  return db.query(command, [id])
     .then(({rows: articles }) => {
 
         if (articles.length ===0){
@@ -132,8 +139,18 @@ exports.fetchCommentsForArticle = (id) => {
                 msg: "Not Found"
             })
         }
+        
 
         return articles
 
 
-    })}
+    })
+   
+    }
+    
+    
+    
+   
+  
+
+  

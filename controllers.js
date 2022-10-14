@@ -63,10 +63,11 @@ exports.getCommentsForArticle = (req,res,next) => {
 
     fetchCommentsForArticle(id)
     .then((articles) => {
-        
+               
         return res.status(200).send({articles})
     })
     .catch((err) => {
+        console.log(err)
         next(err)
     })
 }
