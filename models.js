@@ -76,7 +76,7 @@ exports.fetchAndModifyArticle = (id, votesValue) =>{
 exports.fetchArticles = (topic) => {
     let queryValues = []
     let topics = ['cats', 'paper', 'mitch', 'coding', 'cooking', 'football']
-  
+ 
     
  let command = `
     SELECT articles.article_id, articles.author, articles.body, articles.title, articles.topic, articles.votes, articles.created_at, COUNT(comments.article_id)::INT AS comment_count
@@ -131,3 +131,45 @@ console.log("in models")
     })
 
 }
+exports.fetchCommentsForArticle = (id) => {
+    
+    const idQuery = `
+    SELECT article_id
+    FROM articles
+    WHERE article_id = $1
+    `
+    
+    
+    const command = 
+    `SELECT comments.comment_id, comments.votes, comments.created_at, comments.author, comments.body, articles.article_id
+    FROM articles
+    LEFT JOIN comments
+        ON articles.article_id = comments.article_id
+    WHERE articles.article_id = $1
+    ORDER BY created_at DESC;`
+
+  
+  return db.query(command, [id])
+    .then(({rows: articles }) => {
+
+        if (articles.length ===0){
+            return Promise.reject({
+                status:404,
+                msg: "Not Found"
+            })
+        }
+        
+
+        return articles
+
+
+    })
+   
+    }
+    
+    
+    
+   
+  
+
+  

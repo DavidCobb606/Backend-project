@@ -1,5 +1,6 @@
 
-const {fetchTopics, fetchArticles, fetchUsers, fetchAndModifyArticle, fetchArticleById, postComment} = require("./models.js")
+const {fetchTopics, fetchArticleById, fetchUsers, fetchAndModifyArticle, fetchCommentsForArticle, fetchArticles, postComment} = require("./models.js")
+
 
 exports.getTopics = (req,res, next) =>{
     fetchTopics()
@@ -44,7 +45,7 @@ exports.getModifiedArticle = (req,res,next) =>{
 }
 
 exports.getArticles =  (req,res,next) => {
-  
+   
     const {topic} = req.query 
 
    return fetchArticles(topic)   
@@ -69,5 +70,19 @@ exports.getPostedComment = (req,res,next) => {
     })
     .catch(next)
 }
+     
+exports.getCommentsForArticle = (req,res,next) => {
+    const id = req.params.article_id;
+   
 
+    fetchCommentsForArticle(id)
+    .then((articles) => {
+               
+        return res.status(200).send({articles})
+    })
+    .catch((err) => {
+        console.log(err)
+        next(err)
+    })
+}
     
