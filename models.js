@@ -73,9 +73,11 @@ exports.fetchAndModifyArticle = (id, votesValue) =>{
     })
 }
 
-exports.fetchArticles = (topic) => {
+exports.fetchArticles = (topic, sort_by, orderBy, comment_count) => {
     let queryValues = []
     let topics = ['cats', 'paper', 'mitch', 'coding', 'cooking', 'football']
+    
+   
  
     
  let command = `
@@ -86,10 +88,9 @@ exports.fetchArticles = (topic) => {
         ON articles.article_id = comments.article_id
     `    
     
-    if(topic){
-        
+    if(topic){        
         if (topics.includes(topic)){
-            
+
             command += ` WHERE articles.topic = $1`
 
             queryValues.push(topic)
@@ -102,12 +103,24 @@ exports.fetchArticles = (topic) => {
       }  
     } 
 
-    command += ` GROUP BY articles.article_id ORDER BY articles.created_at DESC`
+    command += ` GROUP BY articles.article_id`
 
+if (!)
 
+    if(sort_by){
+        command += ` ORDER BY ${sort_by} DESC;`
+        queryValues.push(sort_by)
+        console.log(queryValues)
+    }
+    if(!sort_by){
+        command += ` ORDER BY ${comment_count} DESC`
+        queryValues.push(comment_count)
+    }
+console.log(sort_by)
+console.log(command)
     return db.query(command, queryValues)
     .then(({rows})=>{      
-        
+        console.log(rows)
         return rows
     })
 

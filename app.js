@@ -20,6 +20,7 @@ app.patch("/api/articles/:article_id", getModifiedArticle)
 
 app.post("/api/articles/:article_id/comments", getPostedComment)
 
+app.get("/api/articles")
 
 
 app.all("/*", (req,res) => {
