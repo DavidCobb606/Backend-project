@@ -233,7 +233,7 @@ describe("GET /api/articles", () => {
 
    
 
-describe.only("GET /api/articles/:article_id/comments", () => {
+describe("GET /api/articles/:article_id/comments", () => {
   test("Server should respond with an array of comments for the given article_id, where each comments should have the properties `comment_id`, `votes`, `created_at`, `author`, `body`", () => {
     return request(app)
     .get("/api/articles/1/comments")
@@ -241,6 +241,7 @@ describe.only("GET /api/articles/:article_id/comments", () => {
     .then(({body}) => {
      
       const article = body.articles
+      expect(article.length).toBeGreaterThan(0)
       
 
       article.forEach((element) => {    
@@ -266,17 +267,19 @@ describe.only("GET /api/articles/:article_id/comments", () => {
     })
 
   })
-  test ("If the client has entered an article id that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
+  test.only("If the client has entered an article id that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
     return request(app)
     .get("/api/articles/1234567/comments")
-    .expect(404)
+    
     .then(({body}) => {
-      
+      console.log(body.msg)
       expect(body.msg).toBe("Not Found")
+      expect
     })
+
   }) 
 
-  testq("If the client has entered an article id that exists but has no instances of it, return a 200 status and an object with all of its properties null aside from its article_id.", () => {
+  test("If the client has entered an article id that exists but has no instances of it, return a 200 status and an object with all of its properties null aside from its article_id.", () => {
     return request(app)
     .get("/api/articles/2/comments")
     .expect(200)
