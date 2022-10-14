@@ -1,6 +1,5 @@
 const express = require("express");
-const {getTopics, getArticles,getUsers, getModifiedArticle, getCommentsForArticle, getArticleById} = require("./controllers.js")
-
+const {getTopics, getArticles,getUsers, getArticleById, getModifiedArticle} = require("./controllers.js")
 
 const app = express();
 
@@ -10,14 +9,9 @@ app.get("/api/topics", getTopics);
 app.get("/api/articles", getArticles)
 
 app.get("/api/articles/:article_id", getArticleById)
-
-app.get("/api/articles/:article_id/comments", getCommentsForArticle)
-
-
 app.get("/api/users", getUsers)
 
 app.patch("/api/articles/:article_id", getModifiedArticle)
-
 
 
 app.all("/*", (req,res) => {
@@ -26,7 +20,8 @@ app.all("/*", (req,res) => {
 })
 
 app.use((err, req,res,next) => {
-
+  console.log(err)
+ 
   if(err.code === "22P02" || err.code === "23502" || err.status === 400){
     res.status(400).send({msg: "Bad Request"})}
     else next(err)
