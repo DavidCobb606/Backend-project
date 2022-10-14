@@ -1,5 +1,5 @@
 
-const {fetchTopics, fetchArticle, fetchUsers, fetchAndModifyArticle} = require("./models.js")
+const {fetchTopics, fetchArticles, fetchUsers, fetchAndModifyArticle, fetchArticleById, postComment} = require("./models.js")
 
 exports.getTopics = (req,res, next) =>{
     fetchTopics()
@@ -11,9 +11,9 @@ exports.getTopics = (req,res, next) =>{
     })
 }
 
-exports.getArticle = (req,res, next) => {
+exports.getArticleById = (req,res, next) => {
   
-    fetchArticle(req.params.article_id)
+    fetchArticleById(req.params.article_id)
     .then((articles) => {  
             
           return res.status(200).send({articles})  
@@ -33,7 +33,7 @@ exports.getUsers = (req,res, next) => {
 exports.getModifiedArticle = (req,res,next) =>{
     const id = req.params.article_id;
     const votesValue = req.body.inc_votes 
-
+  
     
     fetchAndModifyArticle(id, votesValue).
     then((articles) => {
@@ -42,6 +42,32 @@ exports.getModifiedArticle = (req,res,next) =>{
     })
     .catch(next)
 }
-     
+
+exports.getArticles =  (req,res,next) => {
+  
+    const {topic} = req.query 
+
+   return fetchArticles(topic)   
+   .then((articles) => {   
+  
+       res.status(200).send({articles})
+   })
+    .catch(next)         
+   
+}
+
+exports.getPostedComment = (req,res,next) => {
+    console.log("in controller")
+    const author = req.body.author
+    const id = req.params.article_id
+    const comment = req.body.body
+    
+    return postComment(author, id, comment)
+    .then((comments) => {
+       console.log(comments)
+        res.status(200).send({comments})
+    })
+    .catch(next)
+}
 
     
