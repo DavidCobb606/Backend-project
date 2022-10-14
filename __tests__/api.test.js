@@ -66,7 +66,7 @@ describe("GET api/articles/:article_id", () => {
       })
   
     })
-    test ("If the client has entered an article that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
+    test("If the client has entered an article that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
       return request(app)
       .get("/api/articles/1234567")
       .expect(404)
@@ -188,8 +188,7 @@ describe("GET /api/articles", () => {
       return request(app)
       .get("/api/articles/?topic=cats")
       .then(({body}) => {
-        console.log(body.articles)
-       
+              
         const articles = body.articles;
         expect(articles.length).toBeGreaterThan(0)
         articles.forEach((element) => {
@@ -231,7 +230,190 @@ describe("GET /api/articles", () => {
 
 
 
-   
+describe("POST /api/articles/:article_id/comments", () =>{
+  it("Should respond with a 200 status and the posted comment", () => {
+    return request(app)
+    .post("/api/articles/1/comments")
+    .send({body: "this is a test comment",
+  author: "icellusedkars"})
+    .then(({body}) => {
+      expect(200)
+      console.log(body.comments)
+      expect(body.comments[0]).toEqual(
+        expect.objectContaining({
+        article_id: 1,
+        body: "this is a test comment",
+        author: "icellusedkars",
+        votes: 0,
+        created_at: expect.any(String)
+      }))
+    })    
+  })
+ it("Server should respond with `400: Bad Request` if the client has sent the data in a bad form", () => {
+  return request(app)
+  .post("/api/articles/1/comments")
+  .send({bod: "another sample test", author: "David"})
+  .expect(400)
+  .then(({body}) => {
+    expect(body.msg).toBe("Bad Request")
+  })
+ })
+
+  it("Server should respond with `404: Bad Request` if the client has sent the author of the post in a valid form but there are no instances of it", () => {
+    return request(app)
+    .post("/api/articles/1/comments")
+    .send({body: "another sample test", author: "David"})
+    .expect(404)
+    .then(({body}) => {
+      expect(body.msg).toBe("Not Found")
+    })
+
+  })
+
+  it("Server should respond with `400: Bad Request` if the client has sent an invalid id", ()=>{
+    return request(app)
+    .post("/api/articles/not-a-number/comments")
+    .send({body: "another sample test", author: "David"})
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("Bad Request")
+    })
+  })
+  it("Server should respond with `404: Not Found` if the client has entered an article id that is valid but doesn't exist", () => {
+    return request(app)
+    .post("/api/articles/109999/comments")
+    .send({body: "another sample test", author: "David"})
+    .expect(404)
+    .then(({body}) => {
+      expect(body.msg).toBe("Not Found")
+    })
+  })
+})
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 describe("GET /api/articles/:article_id/comments", () => {
   test("Server should respond with an array of comments for the given article_id, where each comments should have the properties `comment_id`, `votes`, `created_at`, `author`, `body`", () => {
@@ -267,7 +449,7 @@ describe("GET /api/articles/:article_id/comments", () => {
     })
 
   })
-  test.only("If the client has entered an article id that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
+  test("If the client has entered an article id that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
     return request(app)
     .get("/api/articles/1234567/comments")
     

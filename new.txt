@@ -1,17 +1,7 @@
 You are now connected to database "nc_news_test" as user "david".
- article_id 
-------------
-          1
-          2
-          3
-          4
-          5
-          6
-          7
-          8
-          9
-         10
-         11
-         12
-(12 rows)
+ slug  |      description       
+-------+------------------------
+ paper | what books are made of
+(1 row)
 
+INSERT 0 1

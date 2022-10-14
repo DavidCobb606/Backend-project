@@ -1,5 +1,5 @@
 
-const {fetchTopics, fetchArticleById, fetchUsers, fetchAndModifyArticle, fetchCommentsForArticle, fetchArticles} = require("./models.js")
+const {fetchTopics, fetchArticleById, fetchUsers, fetchAndModifyArticle, fetchCommentsForArticle, fetchArticles, postComment} = require("./models.js")
 
 
 exports.getTopics = (req,res, next) =>{
@@ -55,6 +55,20 @@ exports.getArticles =  (req,res,next) => {
    })
     .catch(next)         
    
+}
+
+exports.getPostedComment = (req,res,next) => {
+    console.log("in controller")
+    const author = req.body.author
+    const id = req.params.article_id
+    const comment = req.body.body
+    
+    return postComment(author, id, comment)
+    .then((comments) => {
+       console.log(comments)
+        res.status(200).send({comments})
+    })
+    .catch(next)
 }
      
 exports.getCommentsForArticle = (req,res,next) => {

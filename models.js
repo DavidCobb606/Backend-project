@@ -1,4 +1,6 @@
+const { string } = require("pg-format");
 const db = require("./db/connection");
+const articles = require("./db/data/test-data/articles");
 
 
 exports.fetchTopics = () => {
@@ -112,6 +114,23 @@ exports.fetchArticles = (topic) => {
 
 }
 
+exports.postComment = (author, id, comment) => {
+
+    let command = `INSERT INTO comments(body, author, article_id)
+    VALUES($1, $2, $3)
+    RETURNING *`
+console.log("in models")
+
+   
+    
+    return db.query(command, [comment, author, id ])
+    .then(({rows: comments}) => {
+      
+
+        return comments
+    })
+
+}
 exports.fetchCommentsForArticle = (id) => {
     
     const idQuery = `
