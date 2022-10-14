@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "setup-dbs": "psql -f ./db/setup.sql",
-    "seed:": "node ./db/seeds/run-seed.js",
+    "seed": "node ./db/seeds/run-seed.js",
     "test": "jest --watch",
     "prepare": "husky install",
     "seed:prod": "NODE_ENV=production https://data.heroku.com/datastores/949611f6-3e48-465d-a9d2-6aab7c4229f2#administration=$(heroku config:get https://data.heroku.com/datastores/949611f6-3e48-465d-a9d2-6aab7c4229f2#administration) npm run seed",
