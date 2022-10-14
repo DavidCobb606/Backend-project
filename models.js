@@ -125,13 +125,7 @@ console.log("in models")
     
     return db.query(command, [comment, author, id ])
     .then(({rows: comments}) => {
-       console.log(comments)
-        if(comments.length ===0){
-            return Promise.reject({
-                status:404,
-                msg: "Not Found"
-            })
-        }
+      
 
         return comments
     })

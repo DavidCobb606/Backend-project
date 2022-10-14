@@ -230,7 +230,7 @@ describe("GET /api/articles", () => {
 
 
 
-describe("POST /api/articles/:article_id/comments", () =>{
+describe.only("POST /api/articles/:article_id/comments", () =>{
   it("Should respond with a 200 status and the posted comment", () => {
     return request(app)
     .post("/api/articles/1/comments")
@@ -249,11 +249,14 @@ describe("POST /api/articles/:article_id/comments", () =>{
       }))
     })    
   })
- it.only("Server should respond with `400: Bad Request` if the client has sent the data in a bad form", () => {
+ it("Server should respond with `400: Bad Request` if the client has sent the data in a bad form", () => {
   return request(app)
   .post("/api/articles/1/comments")
   .send({bod: "another sample test", author: "David"})
   .expect(400)
+  .then(({body}) => {
+    expect(body.msg).toBe("Bad Request")
+  })
  })
 
   it("Server should respond with `404: Bad Request` if the client has sent the author of the post in a valid form but there are no instances of it", () => {
@@ -261,19 +264,29 @@ describe("POST /api/articles/:article_id/comments", () =>{
     .post("/api/articles/1/comments")
     .send({body: "another sample test", author: "David"})
     .expect(404)
+    .then(({body}) => {
+      expect(body.msg).toBe("Not Found")
+    })
+
   })
 
-  it.only("Server should respond with `400: Bad Request` if the client has sent an invalid id", ()=>{
+  it("Server should respond with `400: Bad Request` if the client has sent an invalid id", ()=>{
     return request(app)
     .post("/api/articles/not-a-number/comments")
     .send({body: "another sample test", author: "David"})
     .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("Bad Request")
+    })
   })
-  it.only("Server should respond with `404: Not Found` if the client has entered an article id that is valid but doesn't exist", () => {
+  it("Server should respond with `404: Not Found` if the client has entered an article id that is valid but doesn't exist", () => {
     return request(app)
     .post("/api/articles/109999/comments")
     .send({body: "another sample test", author: "David"})
     .expect(404)
+    .then(({body}) => {
+      expect(body.msg).toBe("Not Found")
+    })
   })
 })
 
