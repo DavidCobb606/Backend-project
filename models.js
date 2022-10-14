@@ -129,33 +129,7 @@ exports.fetchCommentsForArticle = (id) => {
     WHERE articles.article_id = $1
     ORDER BY created_at DESC;`
 
-    // db.query(idQuery)
-    // .then(({rows}) => {
-    //     console.log(rows)
-    //     const queryValues = rows.map((element) => {
-    //         return element.article_id
-    //     })
-    //     return queryValues
-    
-    // })
-
-    // const checkIdExists = async(id) =>{
-    //     const dbOutput = await db.query(`
-    //     SELECT article_id
-    //     FROM articles
-    //     WHERE article_id = $1
-    //     `, [id])
-    //     console.log(id)
-    //     console.log(dbOutput)
-
-    //     if (dbOutput.rows.length === 0){
-    //         console.log(dbOutput)
-    //         return Promise.reject({status:404, msg: "Not Found"})
-    //     }
-    // }
-
-
-
+  
   return db.query(command, [id])
     .then(({rows: articles }) => {
 
