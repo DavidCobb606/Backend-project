@@ -46,9 +46,9 @@ exports.getModifiedArticle = (req,res,next) =>{
 
 exports.getArticles =  (req,res,next) => {
    
-    const {topic} = req.query 
-
-   return fetchArticles(topic)   
+    const {topic, sort_by, orderBy} = req.query
+    
+   return fetchArticles(topic, sort_by, orderBy)   
    .then((articles) => {   
   
        res.status(200).send({articles})
@@ -58,14 +58,16 @@ exports.getArticles =  (req,res,next) => {
 }
 
 exports.getPostedComment = (req,res,next) => {
-    console.log("in controller")
+   
     const author = req.body.author
     const id = req.params.article_id
     const comment = req.body.body
+
+    
     
     return postComment(author, id, comment)
     .then((comments) => {
-       console.log(comments)
+     
         res.status(200).send({comments})
     })
     .catch(next)
@@ -81,7 +83,7 @@ exports.getCommentsForArticle = (req,res,next) => {
         return res.status(200).send({articles})
     })
     .catch((err) => {
-        console.log(err)
+        
         next(err)
     })
 }
