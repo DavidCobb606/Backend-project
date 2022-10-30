@@ -159,6 +159,7 @@ describe("GET /api/articles", () => {
 
     return request(app).get("/api/articles")
     .then(({body}) => {
+      
       const articles = body.articles
       expect(articles).toBeInstanceOf(Array)
       expect(articles.length).toBeGreaterThan(0)
@@ -180,6 +181,7 @@ describe("GET /api/articles", () => {
     test("The array of objects should be sorted by the date of created, going from most recent to least recent", () => {
       return request(app).get("/api/articles")
       .then(({body}) => {
+       
         const articles = body.articles
         expect(articles).toBeSortedBy("created_at", {descending: true})
       })
@@ -218,7 +220,7 @@ describe("GET /api/articles", () => {
       })
     })
  
-    test("If the client enters a query where the topic exists but there are no articles", () => {
+    test("If the client enters a query where the topic exists but there are no articles we should expect an empty array", () => {
       return request(app)
       .get("/api/articles/?topic=paper")
       .expect(200)
@@ -291,127 +293,6 @@ describe("POST /api/articles/:article_id/comments", () =>{
 })
 
 
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -482,3 +363,166 @@ describe("GET /api/articles/:article_id/comments", () => {
   })
 
 })
+
+describe("Addition to GET /api/articles to include queries", () => {
+
+  it("should accept the query `sort_by`, which sorts the articles by any valid column, defaulting to date", () => {
+    return request(app)
+    .get("/api/articles/?sort_by=articles.votes") //any valid column
+    .expect(200)
+    .then(({body}) => {
+         
+      expect(body.articles).toBeSortedBy("votes", {descending: true})
+    })
+  })
+
+  it("Should accept the query `order`, which can be set to ascending", () => {
+    return request(app)
+    .get("/api/articles/?orderBy=asc") 
+    .expect(200)
+    .then(({body}) => {     
+      expect(body.articles).toBeSortedBy("created_at", {ascending: true})
+    })
+
+  })
+
+  it("Should accept the query `order`, which can be set to descending", () => {
+    return request(app)
+    .get("/api/articles/?orderBy=desc") 
+    .then(({body}) => {
+      expect(body.articles).toBeSortedBy("created_at", {descending: true})
+    })
+  })
+  
+  it("Should give a 404 error message if the query is valid but doesn't exist", () => {
+    return request(app)
+    .get("/api/articles/?orderBy=upwards")
+    .expect(404)
+    .then(({body})=>{
+      console.log(body)
+      expect(body.msg).toBe("Not Found")
+    })
+
+  })
+  
+})  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
