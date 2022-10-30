@@ -73,11 +73,11 @@ exports.fetchAndModifyArticle = (id, votesValue) =>{
     })
 }
 
-exports.fetchArticles = (topic, sort_by, orderBy, comment_count) => {
+exports.fetchArticles = (topic, sort_by = "created_at", orderBy = "desc") => {
     let queryValues = []
     let topics = ['cats', 'paper', 'mitch', 'coding', 'cooking', 'football']
     
-   
+   console.log("fetch articles")
  
     
  let command = `
@@ -103,24 +103,15 @@ exports.fetchArticles = (topic, sort_by, orderBy, comment_count) => {
       }  
     } 
 
-    command += ` GROUP BY articles.article_id`
+    command += ` 
+    GROUP BY articles.article_id
+    ORDER BY ${sort_by} ${orderBy}    
+    `
 
-if (!)
 
-    if(sort_by){
-        command += ` ORDER BY ${sort_by} DESC;`
-        queryValues.push(sort_by)
-        console.log(queryValues)
-    }
-    if(!sort_by){
-        command += ` ORDER BY ${comment_count} DESC`
-        queryValues.push(comment_count)
-    }
-console.log(sort_by)
-console.log(command)
     return db.query(command, queryValues)
-    .then(({rows})=>{      
-        console.log(rows)
+    .then(({rows})=>{   
+        
         return rows
     })
 

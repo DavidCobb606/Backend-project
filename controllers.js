@@ -46,13 +46,9 @@ exports.getModifiedArticle = (req,res,next) =>{
 
 exports.getArticles =  (req,res,next) => {
    
-    const {topic} = req.query 
-    const {sort_by} = req.query
-    const {orderBy} = req.query
-    const {comment_count} = req.query
-    console.log(sort_by)
-
-   return fetchArticles(topic, sort_by, orderBy, comment_count)   
+    const {topic, sort_by, orderBy} = req.query
+    
+   return fetchArticles(topic, sort_by, orderBy)   
    .then((articles) => {   
   
        res.status(200).send({articles})
@@ -66,6 +62,8 @@ exports.getPostedComment = (req,res,next) => {
     const author = req.body.author
     const id = req.params.article_id
     const comment = req.body.body
+
+    
     
     return postComment(author, id, comment)
     .then((comments) => {
