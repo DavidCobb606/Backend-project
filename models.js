@@ -1,4 +1,3 @@
-const { string } = require("pg-format");
 const db = require("./db/connection");
 const articles = require("./db/data/test-data/articles");
 
@@ -77,8 +76,7 @@ exports.fetchArticles = (topic, sort_by = "created_at", orderBy = "desc") => {
     let queryValues = []
     let topics = ['cats', 'paper', 'mitch', 'coding', 'cooking', 'football']
     
-   console.log("fetch articles")
- 
+   
     
  let command = `
     SELECT articles.article_id, articles.author, articles.body, articles.title, articles.topic, articles.votes, articles.created_at, COUNT(comments.article_id)::INT AS comment_count
@@ -165,11 +163,24 @@ exports.fetchCommentsForArticle = (id) => {
         
 
         return articles
-
-
-    })
-   
+    })   
     }
+
+exports.deleteComment = (comment_id) => {
+
+    const command = `
+        DELETE FROM comments
+        WHERE comment_id=$1
+        RETURNING *
+    `
+   
+return db.query(command, [comment_id])
+.then(({rows}) => {
+    
+    return rows
+})
+
+}
     
     
     

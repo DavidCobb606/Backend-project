@@ -211,7 +211,7 @@ describe("GET /api/articles", () => {
 
     })
  
-    test("If the client enters a query id that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
+    test.only("If the client enters a query id that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
       return request(app)
       .get("/api/articles/?topic=computers")
       .expect(404)
@@ -220,7 +220,7 @@ describe("GET /api/articles", () => {
       })
     })
  
-    test("If the client enters a query where the topic exists but there are no articles we should expect an empty array", () => {
+    test.only("If the client enters a query where the topic exists but there are no articles we should expect an empty array", () => {
       return request(app)
       .get("/api/articles/?topic=paper")
       .expect(200)
@@ -402,10 +402,20 @@ describe("Addition to GET /api/articles to include queries", () => {
       console.log(body)
       expect(body.msg).toBe("Not Found")
     })
+  })  
+})  
+
+describe("DELETE /api/comments/:comment_id", () => {
+
+  it("Should delete the relevant comment that pertains to the comment id and send back the deleted comment to confirm it's been deleted", () => {
+    return request(app)
+    .delete("/api/comments/7")
+    .expect(204)
+   
+    })  
 
   })
-  
-})  
+
 
 
 
