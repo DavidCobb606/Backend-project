@@ -211,7 +211,7 @@ describe("GET /api/articles", () => {
 
     })
  
-    test.only("If the client enters a query id that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
+    test("If the client enters a query id that is valid but doesn't exist, the server should respond with `404: Not Found`", () => {
       return request(app)
       .get("/api/articles/?topic=computers")
       .expect(404)
@@ -220,7 +220,7 @@ describe("GET /api/articles", () => {
       })
     })
  
-    test.only("If the client enters a query where the topic exists but there are no articles we should expect an empty array", () => {
+    test("If the client enters a query where the topic exists but there are no articles we should expect an empty array", () => {
       return request(app)
       .get("/api/articles/?topic=paper")
       .expect(200)
@@ -229,8 +229,6 @@ describe("GET /api/articles", () => {
       })
     })
   })
-
-
 
 describe("POST /api/articles/:article_id/comments", () =>{
   it("Should respond with a 200 status and the posted comment", () => {

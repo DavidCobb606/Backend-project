@@ -86,7 +86,8 @@ exports.fetchArticles = (topic, sort_by = "created_at", orderBy = "desc") => {
         ON articles.article_id = comments.article_id
     `    
     
-    if(topic){        
+    if(topic){   
+             
         if (topics.includes(topic)){
 
             command += ` WHERE articles.topic = $1`
