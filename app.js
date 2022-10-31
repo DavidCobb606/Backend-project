@@ -1,25 +1,25 @@
 const express = require("express");
 const {returnDeletedStatus, getTopics, getArticles,getUsers, getModifiedArticle, getCommentsForArticle, getArticleById, getPostedComment} = require("./controllers.js")
-
-
+const cors = require("cors");
 const app = express();
 
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
 app.get("/api/topics", getTopics);
-app.get("/api/articles", getArticles)
+app.get("/api/articles", getArticles);
 
-app.get("/api/articles/:article_id", getArticleById)
+app.get("/api/articles/:article_id", getArticleById);
 
-app.get("/api/articles/:article_id/comments", getCommentsForArticle)
+app.get("/api/articles/:article_id/comments", getCommentsForArticle);
 
-app.get("/api/users", getUsers)
+app.get("/api/users", getUsers);
 
-app.patch("/api/articles/:article_id", getModifiedArticle)
+app.patch("/api/articles/:article_id", getModifiedArticle);
 
-app.post("/api/articles/:article_id/comments", getPostedComment)
+app.post("/api/articles/:article_id/comments", getPostedComment);
 
-app.delete("/api/comments/:comment_id", returnDeletedStatus)
+app.delete("/api/comments/:comment_id", returnDeletedStatus);
 
 
 app.all("/*", (req,res) => {
