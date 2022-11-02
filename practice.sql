@@ -1,9 +1,9 @@
 \c nc_news_test
     
-DELETE FROM comments
-WHERE comment_id = 10
-RETURNING *
-;
+UPDATE articles 
+   SET votes = votes + 95
+   WHERE article_id = 4
+   RETURNING *
 
 
     

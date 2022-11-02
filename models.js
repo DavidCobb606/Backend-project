@@ -54,7 +54,7 @@ exports.fetchUsers = () => {
 exports.fetchAndModifyArticle = (id, votesValue) =>{
     const command = `
    UPDATE articles 
-   SET votes = $2
+   SET votes = votes + $2
    WHERE article_id = $1
    RETURNING *
     `
@@ -122,7 +122,7 @@ exports.postComment = (author, id, comment) => {
     let command = `INSERT INTO comments(body, author, article_id)
     VALUES($1, $2, $3)
     RETURNING *`
-console.log("in models")
+
 
    
     
