@@ -1,7 +1,7 @@
-You are now connected to database "nc_news_test" as user "david".
- comment_id |          body          | article_id |    author     | votes |     created_at      
-------------+------------------------+------------+---------------+-------+---------------------
-         10 | git push origin master |          3 | icellusedkars |     0 | 2020-06-20 08:24:00
+You are now connected to database "nc_news_test" as user "daviddallas".
+ article_id |        title        | topic |  author  |                                                                                     body                                                                                      |     created_at      | votes 
+------------+---------------------+-------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------+-------
+          4 | Student SUES Mitch! | mitch | rogersop | We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages | 2020-05-06 02:14:00 |   285
 (1 row)
 
-DELETE 1
+UPDATE 1
