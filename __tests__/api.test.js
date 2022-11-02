@@ -238,7 +238,7 @@ describe("POST /api/articles/:article_id/comments", () =>{
   author: "icellusedkars"})
     .then(({body}) => {
       expect(200)
-      console.log(body.comments)
+     
       expect(body.comments[0]).toEqual(
         expect.objectContaining({
         article_id: 1,
@@ -333,7 +333,7 @@ describe("GET /api/articles/:article_id/comments", () => {
     .get("/api/articles/1234567/comments")
     
     .then(({body}) => {
-      console.log(body.msg)
+      
       expect(body.msg).toBe("Not Found")
       expect
     })
@@ -345,7 +345,7 @@ describe("GET /api/articles/:article_id/comments", () => {
     .get("/api/articles/2/comments")
     .expect(200)
     .then(({body}) => {
-      console.log(body)
+     
 
       expect(body.articles[0]).toEqual(
         expect.objectContaining({
@@ -397,7 +397,7 @@ describe("Addition to GET /api/articles to include queries", () => {
     .get("/api/articles/?orderBy=upwards")
     .expect(404)
     .then(({body})=>{
-      console.log(body)
+      
       expect(body.msg).toBe("Not Found")
     })
   })  
