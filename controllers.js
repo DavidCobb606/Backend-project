@@ -94,7 +94,7 @@ const {comment_id} = req.params
     fetchCommentById(comment_id)
     .then((rows) => {
        
-        return res.status(200).send(rows[0])
+        return res.status(200).send(rows)
     })
     .catch((err) => {
         next(err)
