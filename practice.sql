@@ -1,9 +1,8 @@
 \c nc_news_test
-    
-UPDATE articles 
-   SET votes = votes + 95
-   WHERE article_id = 4
-   RETURNING *
 
+SELECT *
+FROM comments
+WHERE comment_id=7
+;
 
     

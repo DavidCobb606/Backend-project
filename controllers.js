@@ -1,5 +1,5 @@
 
-const {fetchTopics, fetchArticleById, fetchUsers, fetchAndModifyArticle, fetchCommentsForArticle, fetchArticles, postComment, deleteComment} = require("./models.js")
+const {fetchTopics, fetchArticleById, fetchUsers, fetchAndModifyArticle, fetchCommentsForArticle, fetchArticles, postComment, deleteComment, fetchCommentById} = require("./models.js")
 
 
 exports.getTopics = (req,res, next) =>{
@@ -35,8 +35,8 @@ exports.getModifiedArticle = (req,res,next) =>{
     const id = req.params.article_id;
     const votesValue = req.body.inc_votes
     
-    fetchAndModifyArticle(id, votesValue).
-    then((articles) => {
+    fetchAndModifyArticle(id, votesValue)
+    .then((articles) => {
         
        return res.status(200).send({articles})        
     })
@@ -87,10 +87,24 @@ exports.getCommentsForArticle = (req,res,next) => {
     })
 }
 
+exports.getCommentById = (req,res,next) => {
+console.log("here ok")
+const {comment_id} = req.params
+
+    fetchCommentById(comment_id)
+    .then((rows) => {
+       
+        return res.status(200).send(rows[0])
+    })
+    .catch((err) => {
+        next(err)
+    })
+
+}
+
 exports.returnDeletedStatus = (req,res, next) => {
 
-    const {comment_id} = req.params
-   
+    const {comment_id} = req.params   
   
     return deleteComment(comment_id)
     .then((rows) => {

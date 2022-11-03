@@ -1,5 +1,5 @@
 const express = require("express");
-const {returnDeletedStatus, getTopics, getArticles,getUsers, getModifiedArticle, getCommentsForArticle, getArticleById, getPostedComment} = require("./controllers.js")
+const {returnDeletedStatus, getTopics, getArticles,getUsers, getModifiedArticle, getCommentsForArticle, getArticleById, getPostedComment, getCommentById} = require("./controllers.js")
 const cors = require("cors");
 const app = express();
 
@@ -19,7 +19,7 @@ app.patch("/api/articles/:article_id", getModifiedArticle);
 
 app.post("/api/articles/:article_id/comments", getPostedComment);
 
-// app.get("/api/comments/:comment_id", getComments)
+app.get("/api/comments/:comment_id", getCommentById)
 
 app.delete("/api/comments/:comment_id", returnDeletedStatus);
 

@@ -107,7 +107,7 @@ describe("PATCH /api/articles/:article_id",() => {
   test("Server responds with a 200 status and an updated article where the votes have been modified accordingly", () => {
     return request(app)
     .patch("/api/articles/2")
-    .send({inc_votes: 100})
+    .send({inc_votes: -4})
     .then(({body}) => {
       expect(body.articles.article_id).toEqual(2)
       expect(200)
@@ -118,7 +118,7 @@ describe("PATCH /api/articles/:article_id",() => {
           topic: expect.any(String),
           body: expect.any(String),
           created_at: expect.any(String),
-          votes: 100,
+          votes: -4,
           author: expect.any(String)
         }
       })
@@ -366,20 +366,21 @@ describe("Addition to GET /api/articles to include queries", () => {
 
   it("should accept the query `sort_by`, which sorts the articles by any valid column, defaulting to date", () => {
     return request(app)
-    .get("/api/articles/?sort_by=articles.votes") //any valid column
+    .get("/api/articles/?sort_by=articles.votes&orderBy=desc") 
     .expect(200)
     .then(({body}) => {
-         
+        
       expect(body.articles).toBeSortedBy("votes", {descending: true})
     })
   })
 
   it("Should accept the query `order`, which can be set to ascending", () => {
     return request(app)
-    .get("/api/articles/?orderBy=asc") 
+    .get("/api/articles/?orderBy=asc&sort_by=articles.votes") 
     .expect(200)
     .then(({body}) => {     
-      expect(body.articles).toBeSortedBy("created_at", {ascending: true})
+      console.log(body)
+      expect(body.articles).toBeSortedBy("votes", {descending: false})
     })
 
   })
@@ -414,7 +415,21 @@ describe("DELETE /api/comments/:comment_id", () => {
 
   })
 
+describe("Get /api/comments/:comment_id", () => {
 
+  it.only("Should get the relevant comment that pertains to the comment id", () => {
+
+    return request(app)
+    .get("/api/comments/5")
+    .expect(200)
+    .then(({body}) => {
+      
+
+    })
+
+  })
+
+})
 
 
 

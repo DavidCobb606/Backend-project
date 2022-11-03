@@ -161,11 +161,27 @@ exports.fetchCommentsForArticle = (id) => {
                 msg: "Not Found"
             })
         }
-        
 
         return articles
     })   
     }
+
+exports.fetchCommentById = (comment_id) => {
+console.log("here ok too")
+    const command = `
+    SELECT *
+    FROM comments
+    WHERE comment_id= $1
+    `
+    return db.query(command, [comment_id])
+    .then(({rows}) => {
+        console.log("this far?")
+        console.log(rows)
+        return rows
+
+    })
+
+}
 
 exports.deleteComment = (comment_id) => {
 
