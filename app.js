@@ -19,6 +19,8 @@ app.patch("/api/articles/:article_id", getModifiedArticle);
 
 app.post("/api/articles/:article_id/comments", getPostedComment);
 
+// app.get("/api/comments/:comment_id", getComments)
+
 app.delete("/api/comments/:comment_id", returnDeletedStatus);
 
 
