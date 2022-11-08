@@ -1,3 +1,5 @@
 node_modules
 .env.*
 practice.sql
+hosting.md
+error-handling.md

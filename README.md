@@ -1,10 +1,43 @@
 # Readme
 
+## About
+
+This project is the back-end component of a larger project called "NC News" that creates a very basic version of a forum where users write articles within certain topics, and other users can comment on said articles. This is not supposed to be a project that would actually have practical working-value, but instead to be a means to showcase skills that I have learnt through my time at Northcoders bootcamp.
+
+## Seeding the database
+
+To start, make sure you have PostgreSQL installed:
+
+```npm i pg```
+
+Then run:
+
+```psql -f ./db/setup.sql ```
+
+This will connect you to the database. 
+
+## Tests
+
+To run the tests, you must have (1) jest, (2) jest supertest, and (3) jest-sorted installed into your dependencies. The installation code for this is:
+
+(1) ```npm i jest ```
+
+(2) ```npm i supertest```
+
+(3) ```npm i jest-sorted ```
+
+
+## .env
+
 Since .env is ignored by git, anyone using this repo will not have access to these variables. You will therefore need to add two files:
 
-(1) .env.development, which connects to the database "nc_news".
+(1) .env.development, which connects to the database "nc_news" in the following format:
 
-(2) .env.test, which connects to the database "nc_news_test".
+PG_DATABASE=nc_news
+
+(2) .env.test, which connects to the database "nc_news_test" in the following format:
+
+PG_DATABASE=nc_news_test
 
 To use these successfully, you will need to install the npm package "dotenv", which you can do by running 
 

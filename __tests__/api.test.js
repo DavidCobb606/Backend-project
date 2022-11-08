@@ -406,18 +406,17 @@ describe("Addition to GET /api/articles to include queries", () => {
 
 describe("DELETE /api/comments/:comment_id", () => {
 
-  it("Should delete the relevant comment that pertains to the comment id and send back the deleted comment to confirm it's been deleted", () => {
+  it("Should delete the relevant comment that pertains to the comment id and send back a 204 message to confirm.", () => {
     return request(app)
     .delete("/api/comments/7")
     .expect(204)
-   
     })  
 
   })
 
 describe("Get /api/comments/:comment_id", () => {
 
-  it.only("Should get the relevant comment that pertains to the comment id", () => {
+  it("Should get the relevant comment that pertains to the comment id", () => {
 
     return request(app)
     .get("/api/comments/5")
