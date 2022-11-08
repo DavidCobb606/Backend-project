@@ -409,7 +409,6 @@ describe("DELETE /api/comments/:comment_id", () => {
     return request(app)
     .delete("/api/comments/7")
     .expect(204)
-   
     })  
 
   })
