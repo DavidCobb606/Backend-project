@@ -4,6 +4,12 @@
 
 This project is the back-end component of a larger project called "NC News" that creates a very basic version of a forum where users write articles within certain topics, and other users can comment on said articles. This is not supposed to be a project that actually has practical working-value, but instead to be a means to showcase skills that I have learnt through my time at Northcoders bootcamp.
 
+The front-end counterpart is available here:
+
+https://github.com/DavidCobb606/nc-news
+
+A minimum version of node needed to run this is v18
+
 ## Connecting to the Database
 
 Since .env is ignored by git, anyone using this repo will not have access to these variables. You will therefore need to add two files:
