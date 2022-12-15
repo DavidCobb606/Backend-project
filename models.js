@@ -1,6 +1,6 @@
 const db = require("./db/connection");
 const articles = require("./db/data/test-data/articles");
-
+//const {axios} = require("axios")
 
 exports.fetchTopics = () => {
     const command = `
@@ -199,6 +199,15 @@ return db.query(command, [comment_id])
 
 }
     
+exports.fetchProductList = () => {
+
+    return axios.get("api.ebay.com")
+    .then((res) => {
+        return res
+    })
+    
+
+}
     
     
    

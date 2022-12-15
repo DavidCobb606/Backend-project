@@ -259,7 +259,7 @@ describe("POST /api/articles/:article_id/comments", () =>{
   })
  })
 
-  it("Server should respond with `404: Bad Request` if the client has sent the author of the post in a valid form but there are no instances of it", () => {
+  it("Server should respond with `404: Not Found` if the client has sent the author of the post in a valid form but there are no instances of it", () => {
     return request(app)
     .post("/api/articles/1/comments")
     .send({body: "another sample test", author: "David"})
@@ -429,6 +429,7 @@ describe("Get /api/comments/:comment_id", () => {
   })
 
 })
+
 
 
 

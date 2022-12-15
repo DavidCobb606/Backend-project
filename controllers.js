@@ -113,4 +113,14 @@ exports.returnDeletedStatus = (req,res, next) => {
     })
 
 }
+
+exports.getProductList = (req,res,next) => {
+
+    return fetchCommentList()
+        .then((rows) => {
+
+            console.log(rows)
+
+        })
+}
     
