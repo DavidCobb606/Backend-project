@@ -167,7 +167,7 @@ exports.fetchCommentsForArticle = (id) => {
     }
 
 exports.fetchCommentById = (comment_id) => {
-console.log("here ok too")
+
     const command = `
     SELECT *
     FROM comments
@@ -175,8 +175,7 @@ console.log("here ok too")
     `
     return db.query(command, [comment_id])
     .then(({rows}) => {
-        console.log("this far?")
-        console.log(rows)
+       
         return rows
 
     })

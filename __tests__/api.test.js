@@ -379,7 +379,7 @@ describe("Addition to GET /api/articles to include queries", () => {
     .get("/api/articles/?orderBy=asc&sort_by=articles.votes") 
     .expect(200)
     .then(({body}) => {     
-      console.log(body)
+     
       expect(body.articles).toBeSortedBy("votes", {descending: false})
     })
 

@@ -88,7 +88,7 @@ exports.getCommentsForArticle = (req,res,next) => {
 }
 
 exports.getCommentById = (req,res,next) => {
-console.log("here ok")
+
 const {comment_id} = req.params
 
     fetchCommentById(comment_id)
