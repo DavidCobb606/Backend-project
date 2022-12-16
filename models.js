@@ -197,17 +197,7 @@ return db.query(command, [comment_id])
 })
 
 }
-    
-exports.fetchProductList = () => {
 
-    return axios.get("api.ebay.com")
-    .then((res) => {
-        return res
-    })
-    
-
-}
-    
     
    
   
